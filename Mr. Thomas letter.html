@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Letter — For Mr. Thomas Baido</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0D0D0D;
+      --surface:  #141414;
+      --text:     #F0EBE1;
+      --muted:    #7A7469;
+      --gold:     #C9A84C;
+      --gold-dim: rgba(201,168,76,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── PAGE SECTIONS ── */
+    .page { opacity: 0; transition: opacity 1.2s ease, transform 1.2s ease; transform: translateY(18px); }
+    .page.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.4s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 9vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 1.2s ease 0.7s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      margin-top: 1.8rem;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.1s forwards;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.6s forwards;
+    }
+
+    .scroll-cue span {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse-line 2s ease-in-out 2s infinite;
+    }
+
+    /* ── LETTER SECTION ── */
+    #letter {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 8rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3rem;
+    }
+
+    .letter-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    .letter-body p + p {
+      margin-top: 1.6em;
+    }
+
+    .letter-body .salutation {
+      font-style: italic;
+      color: var(--gold);
+      font-size: 1.05em;
+      display: block;
+      margin-bottom: 1.6em;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    }
+
+    .divider-diamond {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ── VIDEO SECTION ── */
+    #video-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 8rem 2rem;
+    }
+
+    .video-preamble {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .video-preamble p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .video-frame {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid rgba(201,168,76,0.12);
+      box-shadow: 0 0 80px rgba(201,168,76,0.05), 0 30px 60px rgba(0,0,0,0.6);
+    }
+
+    .video-frame::before {
+      content: '';
+      display: block;
+      padding-top: 56.25%;
+    }
+
+    .video-frame iframe,
+    .video-frame video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--muted);
+    }
+
+    .video-placeholder svg { opacity: 0.3; }
+
+    .video-placeholder p {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── CLOSING ── */
+    #closing {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 6rem 2rem 10rem;
+      text-align: center;
+    }
+
+    .closing-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 3rem;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .signature strong {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-top: 0.3rem;
+    }
+
+    .gold-bar {
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2.5rem auto 0;
+      opacity: 0.5;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page { transition: none; }
+      * { animation: none !important; opacity: 1 !important; transform: none !important; }
+    }
+
+    @media (max-width: 600px) {
+      #letter, #video-section, #closing { padding-left: 1.4rem; padding-right: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ① HERO -->
+  <section id="hero">
+    <p class="eyebrow">A personal letter</p>
+    <h1 class="hero-name">
+      Mr. <em>Thomas</em> Baido
+    </h1>
+    <p class="hero-sub">From your student &nbsp;·&nbsp; June 2026</p>
+
+    <div class="scroll-cue">
+      <span>Read on</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+
+  <!-- ② WRITTEN LETTER -->
+  <section id="letter" class="page">
+    <p class="section-label">Before you press play</p>
+
+    <div class="letter-body">
+      <span class="salutation">Dear Mr. Thomas Baido,</span>
+
+      <p>
+        I have been sitting with this for a while, trying to find the right way
+        to say what I want to say. And I think the only honest way is to just
+        say it plainly.
+      </p>
+
+      <p>
+        You are the most hardworking lecturer I have encountered at Veritas.
+        The most brilliant. A mathematician, a networking engineer, someone who
+        showed up to every class like the subject itself depended on him. I
+        noticed that. I always noticed that.
+      </p>
+
+      <p>
+        But here is what you do not know.
+      </p>
+
+      <p>
+        From early on, I convinced myself that you did not like me. Not because
+        of anything you said directly, but because of the people around you. The
+        sharp ones, the fast ones, the ones who seemed to speak your language
+        naturally. I looked at them, and then I looked at myself, and I made a
+        decision quietly: <em>he will never see me the way he sees them.</em>
+        So I pulled back.
+      </p>
+
+      <p>
+        I stopped coming to your office as I should have — even as NACOS
+        President. I stopped trying the way I should have. There were times I
+        deliberately underperformed, not out of laziness, but out of
+        self-protection. If I never really tried, then it would not hurt that
+        you did not notice.
+      </p>
+
+      <p>
+        I even said it out loud to someone once. <em>"I don't think Mr. Thomas
+        likes me."</em>
+      </p>
+
+      <p>
+        I am not telling you this to make you feel responsible. I am telling you
+        because it is true, and because this letter would mean nothing if I left
+        that part out.
+      </p>
+
+      <p>
+        What I carried from you was not always comfortable. But it was real. You
+        showed me what standard looks like — what it looks like when someone
+        refuses to be ordinary at what they do. And even from a distance, even
+        from behind the wall I had built, that got into me. It is in me now.
+      </p>
+
+      <p>
+        You will teach hundreds more students after me. My face will fade. That
+        is just the nature of it, and I hold no grief about that. But you will
+        not fade from me. The way you showed up, the way you commanded your
+        craft, the way you made me feel&hellip;&hellip;all of
+        it&hellip;&hellip;stays.
+      </p>
+
+      <p>
+        I am grateful, sir. Not despite the complexity of what I felt, but
+        including it. I am grateful I got to sit in your class. I am grateful
+        you passed me when maybe the grade alone did not justify it — when I
+        didn't even deserve it. I am grateful for the privilege of walking this
+        particular path, even the parts that were hard, even the parts that were
+        my own doing.
+      </p>
+
+      <p>
+        This is my goodbye. And it is a full one.
+      </p>
+
+      <p style="margin-top:2.4em; font-style:italic; color: var(--muted);">
+        With gratitude,
+      </p>
+    </div>
+  </section>
+
+
+  <!-- Divider -->
+  <div class="divider page">
+    <div class="divider-diamond"></div>
+  </div>
+
+
+  <!-- ③ VIDEO -->
+  <section id="video-section" class="page">
+    <div class="video-preamble">
+      <p>When you are ready — press play.</p>
+    </div>
+
+    <div class="video-frame">
+      <iframe
+        src="https://www.youtube.com/embed/8VkSIz21cVk"
+        title="A video letter for Mr. Thomas Baido"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+
+  <!-- ④ CLOSING -->
+  <section id="closing" class="page">
+    <p class="closing-quote">
+      "I am grateful for the privilege of the path."
+    </p>
+
+    <div class="signature">
+      With gratitude,
+      <strong>Yusuf Nimrod Mainasara</strong>
+    </div>
+
+    <div class="gold-bar"></div>
+  </section>
+
+
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.page').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
